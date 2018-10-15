@@ -10,6 +10,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.List;
 
 public class MovieDetailAdapter extends ArrayAdapter<MovieDetail> {
@@ -37,10 +39,14 @@ public class MovieDetailAdapter extends ArrayAdapter<MovieDetail> {
         }
 
         ImageView posterView = (ImageView) convertView.findViewById(R.id.poster_image);
-        posterView.setImageResource(movieDetail.imageUrl);
+        //posterView.setImageResource(movieDetail.imageUrl);
 
         TextView movieNameView = (TextView) convertView.findViewById(R.id.tv_movie_title);
-        movieNameView.setText(movieDetail.movieName + " - " +movieDetail.posterPath);
+        movieNameView.setText(movieDetail.movieName);
+
+        Picasso.with(getContext())
+                .load(movieDetail.posterPath)
+                .into(posterView);
 
         return convertView;
     }
