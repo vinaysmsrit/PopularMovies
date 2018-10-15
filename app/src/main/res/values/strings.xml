@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">PopularMovies</string>
+    <string name="error_message">Unable to Load Movie Data from MovieDB !!!</string>
+</resources>
