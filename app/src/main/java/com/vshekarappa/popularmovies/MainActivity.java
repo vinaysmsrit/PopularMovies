@@ -22,19 +22,6 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String API_KEY = "5c25eaa5f74d80e33ae9df32e7b1ff55";
 
-    MovieDetail[] movieDetails1 = {
-            new MovieDetail("Cupcake", R.drawable.cupcake),
-            new MovieDetail("Donut", R.drawable.donut),
-            new MovieDetail("Eclair", R.drawable.eclair),
-            new MovieDetail("Froyo", R.drawable.froyo),
-            new MovieDetail("GingerBread", R.drawable.gingerbread),
-            new MovieDetail("Honeycomb", R.drawable.honeycomb),
-            new MovieDetail("Ice Cream Sandwich", R.drawable.icecream),
-			new MovieDetail("Jelly Bean",  R.drawable.jellybean),
-			new MovieDetail("KitKat",  R.drawable.kitkat),
-			new MovieDetail("Lollipop",  R.drawable.lollipop)
-    };
-
     private TextView mErrorMessageDisplay;
     private ProgressBar mLoadingIndicator;
     private GridView mPosterGridView;

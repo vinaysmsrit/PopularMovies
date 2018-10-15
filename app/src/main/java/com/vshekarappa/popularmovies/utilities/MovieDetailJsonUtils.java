@@ -17,6 +17,8 @@ public class MovieDetailJsonUtils {
 
     private static final String MOV_RESULTS = "results";
     private static final String MOV_TITLE = "title";
+    private static final String MOV_POSTER_PATH = "poster_path";
+    private static final String BASE_POSTER_PATH = "http://image.tmdb.org/t/p/w185/";
 
     public static List<MovieDetail> getMovieDetailFromJson(Context context, String movieDataJsonStr) throws JSONException {
 
@@ -46,7 +48,8 @@ public class MovieDetailJsonUtils {
         for (int i=0; i< moviesArray.length(); i++) {
              JSONObject movieDetailJson = moviesArray.getJSONObject(i);
              String title =  movieDetailJson.getString(MOV_TITLE);
-             MovieDetail movieDetail = new MovieDetail(title,R.drawable.cupcake);
+             String posterPath = BASE_POSTER_PATH + movieDetailJson.getString(MOV_POSTER_PATH);
+             MovieDetail movieDetail = new MovieDetail(title,R.drawable.cupcake,posterPath);
              parsedMovieData.add(movieDetail);
         }
 

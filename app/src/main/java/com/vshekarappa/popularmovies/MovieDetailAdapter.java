@@ -40,7 +40,7 @@ public class MovieDetailAdapter extends ArrayAdapter<MovieDetail> {
         posterView.setImageResource(movieDetail.imageUrl);
 
         TextView movieNameView = (TextView) convertView.findViewById(R.id.tv_movie_title);
-        movieNameView.setText(movieDetail.movieName);
+        movieNameView.setText(movieDetail.movieName + " - " +movieDetail.posterPath);
 
         return convertView;
     }
