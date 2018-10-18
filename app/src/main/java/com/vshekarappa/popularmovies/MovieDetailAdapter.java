@@ -19,13 +19,21 @@ public class MovieDetailAdapter extends ArrayAdapter<MovieDetail> {
 
     private List<MovieDetail> mMovieDetailList;
 
+    private IMoviePosterClickHandler moviePosterClickHandler;
+
     public MovieDetailAdapter(@NonNull Context context, @NonNull List<MovieDetail> movieDetailList) {
         super(context, 0, movieDetailList);
+        moviePosterClickHandler = (IMoviePosterClickHandler) context;
+    }
+
+
+    public interface IMoviePosterClickHandler  {
+        void onClick(MovieDetail movieDetail);
     }
 
     @NonNull
     @Override
-    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+    public View getView(final int position, @Nullable View convertView, @NonNull ViewGroup parent) {
 
         MovieDetail movieDetail = getItem(position);
 
@@ -48,7 +56,20 @@ public class MovieDetailAdapter extends ArrayAdapter<MovieDetail> {
                 .load(movieDetail.posterPath)
                 .into(posterView);
 
+        posterView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MovieDetail movieDetailSelected = getItem(position);
+                moviePosterClickHandler.onClick(movieDetailSelected);
+            }
+        });
+
         return convertView;
+    }
+
+    class ViewHolder {
+        TextView movieName;
+        ImageView posterView;
     }
 
     public void setMovieData(List<MovieDetail> movieDetailList) {
