@@ -23,8 +23,6 @@ public class MainActivity extends AppCompatActivity implements MovieDetailAdapte
     private static final String DETAIL_MOVIE_ID = "movie_id";
     private MovieDetailAdapter movieAdapter;
 
-    private static final String API_KEY = "5c25eaa5f74d80e33ae9df32e7b1ff55";
-
     private TextView mErrorMessageDisplay;
     private ProgressBar mLoadingIndicator;
     private GridView mPosterGridView;
@@ -45,7 +43,7 @@ public class MainActivity extends AppCompatActivity implements MovieDetailAdapte
     }
 
     private void loadMovieData() {
-        new FetchMovieDataTask().execute(API_KEY);
+        new FetchMovieDataTask().execute("popular");
     }
 
     private void showPosterView(List<MovieDetail> movieDetails) {
@@ -79,6 +77,7 @@ public class MainActivity extends AppCompatActivity implements MovieDetailAdapte
 
         Intent intentDetail = new Intent(this,DetailActivity.class);
         intentDetail.putExtra(Intent.EXTRA_TEXT,movieDetail.movieName);
+        intentDetail.putExtra(Intent.EXTRA_INDEX,movieDetail.movieId);
         startActivity(intentDetail);
     }
 

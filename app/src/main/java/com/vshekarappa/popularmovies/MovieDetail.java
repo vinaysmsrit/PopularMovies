@@ -2,12 +2,12 @@ package com.vshekarappa.popularmovies;
 
 public class MovieDetail {
     String movieName;
-    int imageUrl; // storing Image URL
     String posterPath;
+    int movieId;
 
-    public MovieDetail(String movieName, int imageUrl, String posterPath) {
+    public MovieDetail(String movieName, String posterPath, int movieId) {
         this.movieName = movieName;
-        this.imageUrl = imageUrl;
         this.posterPath = posterPath;
+        this.movieId = movieId;
     }
 }

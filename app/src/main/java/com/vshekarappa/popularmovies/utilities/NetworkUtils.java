@@ -13,13 +13,15 @@ import java.util.Scanner;
 public class NetworkUtils {
 
     private static final String TAG = NetworkUtils.class.getSimpleName();
-    private static final String MOVIEDB_BASE_URL = "http://api.themoviedb.org/3/movie/popular";
-    private static final String QUERY_PARAM = "api_key";
 
-    public static URL buildUrl(String apiKey) {
-        Uri builtUri = Uri.parse(MOVIEDB_BASE_URL).buildUpon()
-                .appendQueryParameter(QUERY_PARAM, apiKey)
-                .build();
+    private static final String API_QUERY_PARAM = "api_key";
+
+    public static URL buildUrl(String appendParam) {
+
+        Uri builtUri = Uri.parse(MovieConstants.MOVIEDB_BASE_URL).buildUpon()
+                    .appendEncodedPath(appendParam)
+                    .appendQueryParameter(API_QUERY_PARAM, MovieConstants.API_KEY)
+                    .build();
 
         URL url = null;
         try {
@@ -27,9 +29,7 @@ public class NetworkUtils {
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
-
-        Log.v(TAG, "Built URI " + url);
-
+        Log.d(TAG, "Built URI " + url);
         return url;
     }
 
