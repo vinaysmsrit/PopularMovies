@@ -8,14 +8,11 @@ import android.view.View;
 import android.widget.GridView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.vshekarappa.popularmovies.utilities.MovieDetailJsonUtils;
 import com.vshekarappa.popularmovies.utilities.NetworkUtils;
 
-import java.io.IOException;
 import java.net.URL;
-import java.util.Arrays;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements MovieDetailAdapter.IMoviePosterClickHandler {
@@ -39,11 +36,11 @@ public class MainActivity extends AppCompatActivity implements MovieDetailAdapte
 
         mPosterGridView = findViewById(R.id.posters_grid);
 
-        loadMovieData();
+        loadMoviePosters();
     }
 
-    private void loadMovieData() {
-        new FetchMovieDataTask().execute("popular");
+    private void loadMoviePosters() {
+        new FetchMoviePostersTask().execute("popular");
     }
 
     private void showPosterView(List<MovieDetail> movieDetails) {
@@ -73,37 +70,14 @@ public class MainActivity extends AppCompatActivity implements MovieDetailAdapte
 
     @Override
     public void onClick(MovieDetail movieDetail) {
-//        Toast.makeText(this,movieDetail.movieName,Toast.LENGTH_LONG).show();
-
         Intent intentDetail = new Intent(this,DetailActivity.class);
-        intentDetail.putExtra(Intent.EXTRA_TEXT,movieDetail.movieName);
+        intentDetail.putExtra(Intent.EXTRA_TEXT,movieDetail.title);
         intentDetail.putExtra(Intent.EXTRA_INDEX,movieDetail.movieId);
         startActivity(intentDetail);
     }
 
 
-    public class FetchMovieDataTask extends AsyncTask<String,Void, List<MovieDetail>>  {
-
-        @Override
-        protected List<MovieDetail> doInBackground(String... params) {
-
-            String apiKey = params[0];
-
-            URL movieRequestUrl =  NetworkUtils.buildUrl(apiKey);
-
-            try {
-                String movieDetailsData = NetworkUtils.getResponseFromHttpUrl(movieRequestUrl);
-
-                List<MovieDetail> movieDetailList =
-                        MovieDetailJsonUtils.getMovieDetailFromJson(MainActivity.this, movieDetailsData);
-
-                return movieDetailList;
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                return null;
-            }
-        }
+    private class FetchMoviePostersTask extends AsyncTask<String,Void, List<MovieDetail>>  {
 
         @Override
         protected void onPreExecute() {
@@ -112,10 +86,31 @@ public class MainActivity extends AppCompatActivity implements MovieDetailAdapte
         }
 
         @Override
-        protected void onPostExecute(List<MovieDetail> movieDetailList) {
+        protected List<MovieDetail> doInBackground(String... params) {
+
+            String category = params[0];
+
+            URL movieRequestUrl =  NetworkUtils.buildUrl(category);
+
+            try {
+                String moviePosterDetails = NetworkUtils.getResponseFromHttpUrl(movieRequestUrl);
+
+                List<MovieDetail> moviePostersList =
+                        MovieDetailJsonUtils.getMoviePostersFromJson(MainActivity.this, moviePosterDetails);
+
+                return moviePostersList;
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(List<MovieDetail> moviePostersList) {
             mLoadingIndicator.setVisibility(View.INVISIBLE);
-            if (movieDetailList != null) {
-                showPosterView(movieDetailList);
+            if (moviePostersList != null) {
+                showPosterView(moviePostersList);
             } else {
                 showErrorMessage();
             }
