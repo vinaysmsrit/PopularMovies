@@ -7,4 +7,6 @@ public class MovieConstants {
     public static final String MOVIEDB_BASE_URL = "http://api.themoviedb.org/3/movie";
 
 
+    public static final String SORT_POPULAR = "popular";
+    public static final String SORT_TOP_RATED = "top_rated";
 }

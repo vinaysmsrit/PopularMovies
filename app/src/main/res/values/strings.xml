@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">PopularMovies</string>
     <string name="error_message">Unable to Load Movie Data from MovieDB !!!</string>
+    <string name="sort_popular">Sort by Popular</string>
+    <string name="sort_rating">Sort by Rating</string>
+
 </resources>
