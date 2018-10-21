@@ -71,8 +71,7 @@ public class MainActivity extends AppCompatActivity implements MovieDetailAdapte
     @Override
     public void onClick(MovieDetail movieDetail) {
         Intent intentDetail = new Intent(this,DetailActivity.class);
-        intentDetail.putExtra(Intent.EXTRA_TEXT,movieDetail.title);
-        intentDetail.putExtra(Intent.EXTRA_INDEX,movieDetail.movieId);
+        intentDetail.putExtra("movie_data",movieDetail);
         startActivity(intentDetail);
     }
 

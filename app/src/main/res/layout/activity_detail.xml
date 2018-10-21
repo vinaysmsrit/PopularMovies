@@ -23,7 +23,7 @@
             android:textSize="@dimen/detail_title_textsize"/>
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="200dp"
             android:orientation="horizontal">
 
@@ -36,8 +36,10 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="#ffff00"
-                android:text=" Release Date - Rating Text Goes here"/>
+                android:id="@+id/tv_detail_rel_rating"
+                android:textSize="@dimen/detail_title_textsize"
+                android:textStyle="bold"
+                />
         </LinearLayout>
 
         <TextView

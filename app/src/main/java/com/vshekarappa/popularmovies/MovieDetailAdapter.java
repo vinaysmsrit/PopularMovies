@@ -46,14 +46,13 @@ public class MovieDetailAdapter extends ArrayAdapter<MovieDetail> {
                     R.layout.poster_item, parent, false);
         }
 
-        ImageView posterView = (ImageView) convertView.findViewById(R.id.poster_image);
-        //posterView.setImageResource(movieDetail.imageUrl);
+        ImageView posterView = convertView.findViewById(R.id.poster_image);
 
-        TextView movieNameView = (TextView) convertView.findViewById(R.id.tv_movie_title);
-        movieNameView.setText(movieDetail.title);
+        TextView movieNameView = convertView.findViewById(R.id.tv_movie_title);
+        movieNameView.setText(movieDetail.getTitle());
 
         Picasso.with(getContext())
-                .load(movieDetail.posterPath)
+                .load(movieDetail.getPosterPath())
                 .into(posterView);
 
         posterView.setOnClickListener(new View.OnClickListener() {
