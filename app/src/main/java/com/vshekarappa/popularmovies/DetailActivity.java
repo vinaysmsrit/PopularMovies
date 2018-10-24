@@ -1,39 +1,37 @@
 package com.vshekarappa.popularmovies;
 
-import android.content.Intent;
-import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
-import com.vshekarappa.popularmovies.utilities.MovieDetailJsonUtils;
-import com.vshekarappa.popularmovies.utilities.NetworkUtils;
+import com.vshekarappa.popularmovies.utilities.MovieConstants;
 
-import java.io.IOException;
-import java.net.URL;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class DetailActivity extends AppCompatActivity {
-
+    @BindView(R.id.tv_detail_mov_title)
     TextView mMovieTitleView;
+
+    @BindView(R.id.tv_detail_mov_overview)
     TextView mOverviewView;
+
+    @BindView(R.id.tv_detail_rel_rating)
     TextView mReleaseRatingView;
+
+    @BindView(R.id.img_movie_detail)
     ImageView mMovieImageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
-        mMovieTitleView = (TextView) findViewById(R.id.tv_detail_mov_title);
-        mOverviewView = (TextView) findViewById(R.id.tv_detail_mov_overview);
-        mMovieImageView = (ImageView) findViewById(R.id.img_movie_detail);
-        mReleaseRatingView = (TextView) findViewById(R.id.tv_detail_rel_rating);
 
+        ButterKnife.bind(this);
 
-        MovieDetail movieDetail = (MovieDetail) getIntent().getParcelableExtra("movie_data");
+        MovieDetail movieDetail = (MovieDetail) getIntent().getParcelableExtra(MovieConstants.MOVIE_DETAIL_EXTRA);
 
         Picasso.with(DetailActivity.this)
                 .load(movieDetail.getPosterPath())
