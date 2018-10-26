@@ -18,8 +18,11 @@ public class DetailActivity extends AppCompatActivity {
     @BindView(R.id.tv_detail_mov_overview)
     TextView mOverviewView;
 
-    @BindView(R.id.tv_detail_rel_rating)
-    TextView mReleaseRatingView;
+    @BindView(R.id.tv_released)
+    TextView mReleaseView;
+
+    @BindView(R.id.tv_rating)
+    TextView mRatingView;
 
     @BindView(R.id.img_movie_detail)
     ImageView mMovieImageView;
@@ -38,8 +41,8 @@ public class DetailActivity extends AppCompatActivity {
                 .into(mMovieImageView);
 
         mMovieTitleView.setText(movieDetail.getTitle());
-        mReleaseRatingView.setText(" Released on : "+movieDetail.getReleaseDate()+"\n\n"
-                +" Rating : "+movieDetail.getRating()+"/10");
+        mReleaseView.setText(movieDetail.getReleaseDate());
+        mRatingView.setText(movieDetail.getRating()+"/10");
         mOverviewView.setText("Overview : \n"+movieDetail.getOverview());
     }
 }
