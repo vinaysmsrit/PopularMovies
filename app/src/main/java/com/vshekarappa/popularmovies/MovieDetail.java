@@ -54,10 +54,6 @@ public class MovieDetail implements Parcelable{
         this.overview = overview;
     }
 
-    public String getBackdropPath() {
-        return backdropPath;
-    }
-
     public void setBackdropPath(String backdropPath) {
         this.backdropPath = backdropPath;
     }

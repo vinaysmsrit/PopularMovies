@@ -43,6 +43,6 @@ public class DetailActivity extends AppCompatActivity {
         mMovieTitleView.setText(movieDetail.getTitle());
         mReleaseView.setText(movieDetail.getReleaseDate());
         mRatingView.setText(movieDetail.getRating()+"/10");
-        mOverviewView.setText("Overview : \n"+movieDetail.getOverview());
+        mOverviewView.setText(movieDetail.getOverview());
     }
 }

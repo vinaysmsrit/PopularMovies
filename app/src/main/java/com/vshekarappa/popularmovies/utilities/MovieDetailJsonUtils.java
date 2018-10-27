@@ -3,7 +3,6 @@ package com.vshekarappa.popularmovies.utilities;
 import android.content.Context;
 
 import com.vshekarappa.popularmovies.MovieDetail;
-import com.vshekarappa.popularmovies.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;

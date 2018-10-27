@@ -21,7 +21,6 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements MovieDetailAdapter.IMoviePosterClickHandler {
 
-    private static final String DETAIL_MOVIE_ID = "movie_id";
     private MovieDetailAdapter movieAdapter;
 
     private TextView mErrorMessageDisplay;
@@ -34,7 +33,7 @@ public class MainActivity extends AppCompatActivity implements MovieDetailAdapte
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mErrorMessageDisplay = (TextView) findViewById(R.id.tv_error_message_display);
+        mErrorMessageDisplay = findViewById(R.id.tv_error_message_display);
 
         mLoadingIndicator = (ProgressBar) findViewById(R.id.pb_loading_indicator);
 
@@ -118,10 +117,7 @@ public class MainActivity extends AppCompatActivity implements MovieDetailAdapte
             try {
                 String moviePosterDetails = NetworkUtils.getResponseFromHttpUrl(movieRequestUrl);
 
-                List<MovieDetail> moviePostersList =
-                        MovieDetailJsonUtils.getMoviePostersFromJson(MainActivity.this, moviePosterDetails);
-
-                return moviePostersList;
+                return MovieDetailJsonUtils.getMoviePostersFromJson(MainActivity.this, moviePosterDetails);
 
             } catch (Exception e) {
                 e.printStackTrace();

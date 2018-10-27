@@ -17,8 +17,6 @@ import java.util.List;
 public class MovieDetailAdapter extends ArrayAdapter<MovieDetail> {
 
 
-    private List<MovieDetail> mMovieDetailList;
-
     private IMoviePosterClickHandler moviePosterClickHandler;
 
     public MovieDetailAdapter(@NonNull Context context, @NonNull List<MovieDetail> movieDetailList) {
@@ -53,6 +51,7 @@ public class MovieDetailAdapter extends ArrayAdapter<MovieDetail> {
 
         Picasso.with(getContext())
                 .load(movieDetail.getPosterPath())
+                .placeholder(R.drawable.lollipop)
                 .into(posterView);
 
         posterView.setOnClickListener(new View.OnClickListener() {
@@ -71,7 +70,4 @@ public class MovieDetailAdapter extends ArrayAdapter<MovieDetail> {
         ImageView posterView;
     }
 
-    public void setMovieData(List<MovieDetail> movieDetailList) {
-        mMovieDetailList = movieDetailList;
-    }
 }

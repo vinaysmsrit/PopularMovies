@@ -8,4 +8,11 @@
     <dimen name="detail_img_view_width">200dp</dimen>
     <dimen name="detail_img_desc_height">200dp</dimen>
     <dimen name="detail_layout_padding">10dp</dimen>
+    <dimen name="detail_title_height">80dp</dimen>
+    <dimen name="detail_padding_left">20dp</dimen>
+    <dimen name="poster_grid_column_width">150dp</dimen>
+    <dimen name="error_msg_textsize">20sp</dimen>
+    <dimen name="error_msg_padding">16dp</dimen>
+    <dimen name="pb_height">42dp</dimen>
+    <dimen name="pb_width">42dp</dimen>
 </resources>
