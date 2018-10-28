@@ -74,7 +74,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/tv_detail_mov_overview"
-            android:textAlignment="gravity"
+            android:gravity="fill_horizontal"
+            android:paddingLeft="@dimen/detail_overview_padding_left"
             android:textSize="@dimen/detail_title_textsize"
             />
     </LinearLayout>

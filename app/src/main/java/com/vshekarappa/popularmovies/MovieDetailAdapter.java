@@ -46,12 +46,9 @@ public class MovieDetailAdapter extends ArrayAdapter<MovieDetail> {
 
         ImageView posterView = convertView.findViewById(R.id.poster_image);
 
-        TextView movieNameView = convertView.findViewById(R.id.tv_movie_title);
-        movieNameView.setText(movieDetail.getTitle());
-
         Picasso.with(getContext())
                 .load(movieDetail.getPosterPath())
-                .placeholder(R.drawable.lollipop)
+                .placeholder(R.drawable.movie_icon)
                 .into(posterView);
 
         posterView.setOnClickListener(new View.OnClickListener() {

@@ -1,10 +1,10 @@
 <resources>
     <string name="app_name">PopularMovies</string>
+    <string name="main_activity_name">Popular Movies</string>
     <string name="error_message">Unable to Load Movie Data from MovieDB !!!</string>
     <string name="sort_popular">Sort by Popular</string>
     <string name="sort_rating">Sort by Rating</string>
     <string name="released_on">Released on:</string>
     <string name="rating">Rating :</string>
     <string name="movie_detail">MovieDetail</string>
-
 </resources>

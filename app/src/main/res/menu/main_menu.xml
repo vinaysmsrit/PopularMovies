@@ -15,7 +15,6 @@
         android:id="@+id/action_rating"
         android:orderInCategory="1"
         android:title="@string/sort_rating"
-        app:showAsAction="collapseActionView"
-        ></item>
+        app:showAsAction="collapseActionView" />
 
 </menu>
