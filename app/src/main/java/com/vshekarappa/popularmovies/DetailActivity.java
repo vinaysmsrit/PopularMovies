@@ -36,13 +36,19 @@ public class DetailActivity extends AppCompatActivity {
 
         MovieDetail movieDetail = (MovieDetail) getIntent().getParcelableExtra(MovieConstants.MOVIE_DETAIL_EXTRA);
 
-        Picasso.with(DetailActivity.this)
-                .load(movieDetail.getPosterPath())
-                .into(mMovieImageView);
+        setupUI(movieDetail);
+    }
 
-        mMovieTitleView.setText(movieDetail.getTitle());
-        mReleaseView.setText(movieDetail.getReleaseDate());
-        mRatingView.setText(movieDetail.getRating()+"/10");
-        mOverviewView.setText(movieDetail.getOverview());
+    private void setupUI(MovieDetail movieDetail) {
+        if (movieDetail != null) {
+            Picasso.with(DetailActivity.this)
+                    .load(movieDetail.getPosterPath())
+                    .into(mMovieImageView);
+
+            mMovieTitleView.setText(movieDetail.getTitle());
+            mReleaseView.setText(movieDetail.getReleaseDate());
+            mRatingView.setText(movieDetail.getRating()+"/10");
+            mOverviewView.setText(movieDetail.getOverview());
+        }
     }
 }
