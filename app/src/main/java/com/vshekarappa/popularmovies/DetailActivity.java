@@ -66,7 +66,6 @@ public class DetailActivity extends AppCompatActivity {
                 public void onClick(View view) {
                     boolean favAdded = false;
                     if (((ToggleButton)view).isChecked()) {
-                        Toast.makeText(DetailActivity.this, "Favorite Added", Toast.LENGTH_SHORT).show();
                         FavoriteEntity favorite = new FavoriteEntity(movieDetail);
                         mDb.favoriteDao().addFavorite(favorite);
                     } else {
