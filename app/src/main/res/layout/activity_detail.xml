@@ -61,12 +61,25 @@
                     android:text="@string/rating"
                     android:textSize="@dimen/lbl_released_size"
                     android:textStyle="italic"/>
+
+
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/tv_rating"
                     android:textSize="@dimen/detail_title_textsize"
                     android:textStyle="bold"/>
+
+                <ToggleButton
+                    android:id="@+id/btn_favorite"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/favorite_selector"
+                    android:textOff=""
+                    android:textOn=""
+                    />
+
             </LinearLayout>
         </LinearLayout>
 

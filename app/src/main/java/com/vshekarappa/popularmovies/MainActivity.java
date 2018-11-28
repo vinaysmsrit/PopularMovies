@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -22,10 +23,11 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity implements MovieDetailAdapter.IMoviePosterClickHandler {
 
     private MovieDetailAdapter movieAdapter;
-
     private TextView mErrorMessageDisplay;
     private ProgressBar mLoadingIndicator;
     private GridView mPosterGridView;
+
+    private static final String TAG = MovieConstants.APP_LOG_TAG;
 
 
     @Override
@@ -63,6 +65,7 @@ public class MainActivity extends AppCompatActivity implements MovieDetailAdapte
     }
 
     private void loadMoviePosters(String sortBy) {
+        Log.d(TAG,"loadMoviePosters sortBy ="+sortBy);
         new FetchMoviePostersTask().execute(sortBy);
     }
 
@@ -104,6 +107,7 @@ public class MainActivity extends AppCompatActivity implements MovieDetailAdapte
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            Log.d(TAG,"FetchMoviePostersTask onPreExecute");
             mLoadingIndicator.setVisibility(View.VISIBLE);
         }
 
@@ -113,13 +117,14 @@ public class MainActivity extends AppCompatActivity implements MovieDetailAdapte
             String category = params[0];
 
             URL movieRequestUrl =  NetworkUtils.buildUrl(category);
+            Log.d(TAG,"FetchMoviePostersTask URL = "+movieRequestUrl.toString());
 
             try {
                 String moviePosterDetails = NetworkUtils.getResponseFromHttpUrl(movieRequestUrl);
-
+                Log.d(TAG,"FetchMoviePostersTask moviePosterDetails JSON Response Recived ");
                 return MovieDetailJsonUtils.getMoviePostersFromJson(MainActivity.this, moviePosterDetails);
-
             } catch (Exception e) {
+                Log.d(TAG,"FetchMoviePostersTask moviePosterDetails JSON Response ERROR ");
                 e.printStackTrace();
                 return null;
             }
@@ -129,8 +134,10 @@ public class MainActivity extends AppCompatActivity implements MovieDetailAdapte
         protected void onPostExecute(List<MovieDetail> moviePostersList) {
             mLoadingIndicator.setVisibility(View.INVISIBLE);
             if (moviePostersList != null) {
+                Log.d(TAG,"FetchMoviePostersTask onPostExecute movies count="+moviePostersList.size());
                 showPosterView(moviePostersList);
             } else {
+                Log.d(TAG,"FetchMoviePostersTask onPostExecute ERROR ");
                 showErrorMessage();
             }
         }
