@@ -22,4 +22,6 @@ public interface FavoriteDao {
     @Query("SELECT * FROM favorites WHERE favId = :favId")
     FavoriteEntity loadFavoriteById(int favId);
 
+    @Query("SELECT * FROM favorites WHERE movieId = :movieId")
+    List<FavoriteEntity> loadFavoritesByMovieId(int movieId);
 }

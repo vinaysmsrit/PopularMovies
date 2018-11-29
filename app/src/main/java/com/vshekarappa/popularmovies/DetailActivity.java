@@ -11,7 +11,10 @@ import android.widget.ToggleButton;
 import com.squareup.picasso.Picasso;
 import com.vshekarappa.popularmovies.database.FavoriteDatabase;
 import com.vshekarappa.popularmovies.database.FavoriteEntity;
+import com.vshekarappa.popularmovies.utilities.AppExecutors;
 import com.vshekarappa.popularmovies.utilities.MovieConstants;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -49,6 +52,24 @@ public class DetailActivity extends AppCompatActivity {
 
         mDb = FavoriteDatabase.getInstance(getApplicationContext());
 
+        updateFavIcon(movieDetail);
+    }
+
+    private void updateFavIcon(final MovieDetail movieDetail) {
+        AppExecutors.getInstance().getDiskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                final List<FavoriteEntity> favList =  mDb.favoriteDao().loadFavoritesByMovieId(movieDetail.getMovieId());
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if ( favList != null && favList.size() > 0) {
+                            mFavoriteIcon.setChecked(true);
+                        }
+                    }
+                });
+            }
+        });
     }
 
     private void setupUI(final MovieDetail movieDetail) {
@@ -66,8 +87,13 @@ public class DetailActivity extends AppCompatActivity {
                 public void onClick(View view) {
                     boolean favAdded = false;
                     if (((ToggleButton)view).isChecked()) {
-                        FavoriteEntity favorite = new FavoriteEntity(movieDetail);
-                        mDb.favoriteDao().addFavorite(favorite);
+                        final FavoriteEntity favorite = new FavoriteEntity(movieDetail);
+                        AppExecutors.getInstance().getDiskIO().execute(new Runnable() {
+                            @Override
+                            public void run() {
+                                mDb.favoriteDao().addFavorite(favorite);
+                            }
+                        });
                     } else {
                         Toast.makeText(DetailActivity.this,"Favorite Removed ",Toast.LENGTH_SHORT).show();
                     }

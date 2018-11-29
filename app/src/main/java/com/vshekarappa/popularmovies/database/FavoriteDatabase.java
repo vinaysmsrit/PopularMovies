@@ -12,7 +12,7 @@ import com.vshekarappa.popularmovies.utilities.MovieConstants;
 public abstract class FavoriteDatabase extends RoomDatabase {
 
     private static FavoriteDatabase sInstance;
-    private static final String FAV_DATABASE_NAME = "favorites";
+    private static final String FAV_DATABASE_NAME = "favorites.db";
     private static final Object LOCK = new Object();
 
     private static final String TAG = MovieConstants.APP_LOG_TAG;
