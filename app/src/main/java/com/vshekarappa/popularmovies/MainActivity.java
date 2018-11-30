@@ -1,8 +1,11 @@
 package com.vshekarappa.popularmovies;
 
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.Observer;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Environment;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -40,6 +43,11 @@ public class MainActivity extends AppCompatActivity implements MovieDetailAdapte
 
     private static final String TAG = MovieConstants.APP_LOG_TAG;
 
+    private static final int POPULAR_MOVIES  = 100;
+    private static final int TOPRATED_MOVIES = 200;
+    private static final int FAVORITE_MOVIES = 300;
+
+    private int mCategory = POPULAR_MOVIES;
     private FavoriteDatabase mDb;
 
 
@@ -71,25 +79,27 @@ public class MainActivity extends AppCompatActivity implements MovieDetailAdapte
         int id = item.getItemId();
 
         if (id == R.id.action_popular) {
+            mCategory = POPULAR_MOVIES;
             loadMoviePosters(MovieConstants.SORT_POPULAR);
         } else if (id == R.id.action_rating) {
+            mCategory = TOPRATED_MOVIES;
             loadMoviePosters(MovieConstants.SORT_TOP_RATED);
         } else if (id == R.id.action_favorites) {
+            mCategory = FAVORITE_MOVIES;
+            LiveData<List<FavoriteEntity>> favoriteList = mDb.favoriteDao().loadAllFavorites();
             final List<MovieDetail> favMovieList = new ArrayList<>();
-            AppExecutors.getInstance().getDiskIO().execute(new Runnable() {
+            favoriteList.observe(MainActivity.this, new Observer<List<FavoriteEntity>>() {
                 @Override
-                public void run() {
-                    List<FavoriteEntity> favoriteList = mDb.favoriteDao().loadAllFavorites();
-                    for (int i=0; i< favoriteList.size();i++) {
-                        MovieDetail movieDetail = FavoriteUtils.getMovieDetail(favoriteList.get(i));
+                public void onChanged(@Nullable List<FavoriteEntity> favoriteEntities) {
+                    favMovieList.clear();
+                    for (int i=0; i< favoriteEntities.size();i++) {
+                        MovieDetail movieDetail = FavoriteUtils.getMovieDetail(favoriteEntities.get(i));
                         favMovieList.add(movieDetail);
                     }
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            showPosterView(favMovieList);
-                        }
-                    });
+                    Log.d(TAG,"Fav Observer onChanged mCategory="+mCategory);
+                    if (mCategory == FAVORITE_MOVIES) {
+                        showPosterView(favMovieList);
+                    }
                 }
             });
             // writeToSD();
@@ -97,6 +107,7 @@ public class MainActivity extends AppCompatActivity implements MovieDetailAdapte
 
         return super.onOptionsItemSelected(item);
     }
+
 
     private void writeToSD() {
         Log.d(TAG,"writeToSD Enter");
