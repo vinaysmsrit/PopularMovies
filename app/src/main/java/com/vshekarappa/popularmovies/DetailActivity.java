@@ -2,6 +2,7 @@ package com.vshekarappa.popularmovies;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -39,6 +40,7 @@ public class DetailActivity extends AppCompatActivity {
     ToggleButton mFavoriteIcon;
 
     private FavoriteDatabase mDb;
+    private static final String TAG = MovieConstants.APP_LOG_TAG;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +61,8 @@ public class DetailActivity extends AppCompatActivity {
         AppExecutors.getInstance().getDiskIO().execute(new Runnable() {
             @Override
             public void run() {
-                final List<FavoriteEntity> favList =  mDb.favoriteDao().loadFavoritesByMovieId(movieDetail.getMovieId());
+                final List<FavoriteEntity> favList =
+                        mDb.favoriteDao().loadFavoritesByMovieId(movieDetail.getMovieId());
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -95,6 +98,20 @@ public class DetailActivity extends AppCompatActivity {
                             }
                         });
                     } else {
+                        AppExecutors.getInstance().getDiskIO().execute(new Runnable() {
+                            @Override
+                            public void run() {
+                                final List<FavoriteEntity> favList =
+                                        mDb.favoriteDao().loadFavoritesByMovieId(movieDetail.getMovieId());
+
+                                if (favList != null & favList.size() > 0) {
+                                    Log.d(TAG,"Deleting Favorite size="+favList.size());
+                                    for (int i=0;i<favList.size();i++) {
+                                        mDb.favoriteDao().deleteFavorite(favList.get(i));
+                                    }
+                                }
+                            }
+                        });
                         Toast.makeText(DetailActivity.this,"Favorite Removed ",Toast.LENGTH_SHORT).show();
                     }
                 }
