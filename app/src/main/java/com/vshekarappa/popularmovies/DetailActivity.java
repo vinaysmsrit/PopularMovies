@@ -1,5 +1,6 @@
 package com.vshekarappa.popularmovies;
 
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,9 +13,14 @@ import android.widget.ToggleButton;
 import com.squareup.picasso.Picasso;
 import com.vshekarappa.popularmovies.database.FavoriteDatabase;
 import com.vshekarappa.popularmovies.database.FavoriteEntity;
+import com.vshekarappa.popularmovies.model.MovieTrailer;
+import com.vshekarappa.popularmovies.model.UserReview;
 import com.vshekarappa.popularmovies.utilities.AppExecutors;
 import com.vshekarappa.popularmovies.utilities.MovieConstants;
+import com.vshekarappa.popularmovies.utilities.MovieDetailJsonUtils;
+import com.vshekarappa.popularmovies.utilities.NetworkUtils;
 
+import java.net.URL;
 import java.util.List;
 
 import butterknife.BindView;
@@ -39,6 +45,12 @@ public class DetailActivity extends AppCompatActivity {
     @BindView(R.id.btn_favorite)
     ToggleButton mFavoriteIcon;
 
+    @BindView(R.id.tv_vid_trailers)
+    TextView mTrailerView;
+
+    @BindView(R.id.tv_reviews)
+    TextView mReviewsView;
+
     private FavoriteDatabase mDb;
     private static final String TAG = MovieConstants.APP_LOG_TAG;
 
@@ -55,6 +67,14 @@ public class DetailActivity extends AppCompatActivity {
         mDb = FavoriteDatabase.getInstance(getApplicationContext());
 
         updateFavIcon(movieDetail);
+
+        loadMovieTrailerReviews(movieDetail);
+    }
+
+    private void loadMovieTrailerReviews(MovieDetail movieDetail) {
+        int movId = movieDetail.getMovieId();
+        new FetchTrailersTask().execute(movId);
+        new FetchReviewsTask().execute(movId);
     }
 
     private void updateFavIcon(final MovieDetail movieDetail) {
@@ -118,4 +138,68 @@ public class DetailActivity extends AppCompatActivity {
             });
         }
     }
+
+    private class FetchTrailersTask extends AsyncTask<Integer,Void, List<MovieTrailer>> {
+
+        @Override
+        protected List<MovieTrailer> doInBackground(Integer... params) {
+            Integer movId = params[0];
+            String category = movId.toString()+"/videos";
+
+            URL movieTrailersUrl =  NetworkUtils.buildUrl(category);
+            Log.d(TAG,"FetchTrailersTask URL = "+movieTrailersUrl.toString());
+            String movieTrailerDetails = null;
+            try {
+                movieTrailerDetails = NetworkUtils.getResponseFromHttpUrl(movieTrailersUrl);
+                Log.d(TAG,"FetchTrailersTask  JSON Response Received "+movieTrailerDetails);
+                return MovieDetailJsonUtils.getTrailersFromJson(DetailActivity.this,movieTrailerDetails);
+            } catch (Exception e) {
+                Log.d(TAG,"FetchTrailersTask Exception in getting TRAILER !!");
+                e.printStackTrace();
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(List<MovieTrailer> trailerList) {
+            mTrailerView.setText("Trailer List : \n");
+            for(int i=0;i<trailerList.size();i++) {
+                MovieTrailer trailer = trailerList.get(i);
+                mTrailerView.append(trailer.getKey() + " : " +trailer.getName()+"\n");
+            }
+        }
+    }
+
+    private class FetchReviewsTask extends AsyncTask<Integer,Void, List<UserReview>> {
+
+        @Override
+        protected List<UserReview> doInBackground(Integer... params) {
+            Integer movId = params[0];
+            String category = movId.toString()+"/reviews";
+
+            URL movieReviewsUrl =  NetworkUtils.buildUrl(category);
+            Log.d(TAG,"FetchReviewsTask URL = "+movieReviewsUrl.toString());
+            String movieReviewDetails = null;
+            try {
+                movieReviewDetails = NetworkUtils.getResponseFromHttpUrl(movieReviewsUrl);
+                Log.d(TAG,"FetchReviewsTask  JSON Response Received "+movieReviewDetails);
+                return MovieDetailJsonUtils.getReviewsFromJson(DetailActivity.this,movieReviewDetails);
+            } catch (Exception e) {
+                Log.d(TAG,"FetchReviewsTask Exception in getting REVIEWS !!");
+                e.printStackTrace();
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(List<UserReview> userReviewList) {
+            mReviewsView.setText("\n User Reviews : \n\n");
+            for(int i = 0; i< userReviewList.size(); i++) {
+                UserReview userReview = userReviewList.get(i);
+                mReviewsView.append(userReview.getAuthor() +"\n");
+                mReviewsView.append(userReview.getContent() +"\n\n");
+            }
+        }
+    }
+
 }

@@ -85,12 +85,32 @@
 
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:id="@+id/tv_detail_mov_overview"
             android:gravity="fill_horizontal"
             android:paddingLeft="@dimen/detail_overview_padding_left"
             android:textSize="@dimen/detail_title_textsize"
             />
+
+
+        <TextView
+            android:id="@+id/tv_vid_trailers"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:text="This is For Video URL"
+            android:textSize="20sp"/>
+
+        <TextView
+            android:id="@+id/tv_reviews"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:text="This is For Reviews"
+            android:textSize="20sp"/>
+
+
+
     </LinearLayout>
     </ScrollView>
 
@@ -100,6 +120,7 @@
         android:layout_width="@dimen/detail_loading_indicator_width"
         android:layout_gravity="center"
         android:visibility="invisible" />
+
 
 
 </FrameLayout>

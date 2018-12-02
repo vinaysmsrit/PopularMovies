@@ -6,16 +6,15 @@ import android.os.Parcelable;
 public class MovieDetail implements Parcelable{
     private String title;
     private String overview;
-    private String backdropPath;
     private String posterPath;
     private String releaseDate;
     private Double rating;
     private int movieId;
 
     protected MovieDetail(Parcel in) {
+        movieId = in.readInt();
         title = in.readString();
         overview = in.readString();
-        backdropPath = in.readString();
         posterPath = in.readString();
         releaseDate = in.readString();
         if (in.readByte() == 0) {
@@ -23,7 +22,6 @@ public class MovieDetail implements Parcelable{
         } else {
             rating = in.readDouble();
         }
-        movieId = in.readInt();
     }
 
     public static final Creator<MovieDetail> CREATOR = new Creator<MovieDetail>() {
@@ -52,10 +50,6 @@ public class MovieDetail implements Parcelable{
 
     public void setOverview(String overview) {
         this.overview = overview;
-    }
-
-    public void setBackdropPath(String backdropPath) {
-        this.backdropPath = backdropPath;
     }
 
     public String getPosterPath() {
@@ -100,9 +94,9 @@ public class MovieDetail implements Parcelable{
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(movieId);
         parcel.writeString(title);
         parcel.writeString(overview);
-        parcel.writeString(backdropPath);
         parcel.writeString(posterPath);
         parcel.writeString(releaseDate);
         if (rating == null) {
@@ -111,7 +105,6 @@ public class MovieDetail implements Parcelable{
             parcel.writeByte((byte) 1);
             parcel.writeDouble(rating);
         }
-        parcel.writeInt(movieId);
     }
 
 }
