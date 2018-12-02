@@ -4,7 +4,6 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,20 +17,13 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.vshekarappa.popularmovies.database.FavoriteDatabase;
-import com.vshekarappa.popularmovies.database.FavoriteEntity;
-import com.vshekarappa.popularmovies.utilities.AppExecutors;
-import com.vshekarappa.popularmovies.utilities.FavoriteUtils;
+import com.vshekarappa.popularmovies.model.MovieDetail;
 import com.vshekarappa.popularmovies.utilities.MovieConstants;
 import com.vshekarappa.popularmovies.utilities.MovieDetailJsonUtils;
 import com.vshekarappa.popularmovies.utilities.NetworkUtils;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
+
 import java.net.URL;
-import java.nio.channels.FileChannel;
-import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements MovieDetailAdapter.IMoviePosterClickHandler {
@@ -57,9 +49,7 @@ public class MainActivity extends AppCompatActivity implements MovieDetailAdapte
         setContentView(R.layout.activity_main);
 
         mErrorMessageDisplay = (TextView) findViewById(R.id.tv_error_message_display);
-
         mLoadingIndicator = (ProgressBar) findViewById(R.id.pb_loading_indicator);
-
         mPosterGridView = (GridView) findViewById(R.id.posters_grid);
 
         loadMoviePosters(MovieConstants.SORT_POPULAR);
@@ -86,64 +76,18 @@ public class MainActivity extends AppCompatActivity implements MovieDetailAdapte
             loadMoviePosters(MovieConstants.SORT_TOP_RATED);
         } else if (id == R.id.action_favorites) {
             mCategory = FAVORITE_MOVIES;
-            LiveData<List<FavoriteEntity>> favoriteList = mDb.favoriteDao().loadAllFavorites();
-            final List<MovieDetail> favMovieList = new ArrayList<>();
-            favoriteList.observe(MainActivity.this, new Observer<List<FavoriteEntity>>() {
+            LiveData<List<MovieDetail>> favoriteList = mDb.favoriteDao().loadAllFavorites();
+            favoriteList.observe(MainActivity.this, new Observer<List<MovieDetail>>() {
                 @Override
-                public void onChanged(@Nullable List<FavoriteEntity> favoriteEntities) {
-                    favMovieList.clear();
-                    for (int i=0; i< favoriteEntities.size();i++) {
-                        MovieDetail movieDetail = FavoriteUtils.getMovieDetail(favoriteEntities.get(i));
-                        favMovieList.add(movieDetail);
-                    }
+                public void onChanged(@Nullable List<MovieDetail> favoriteEntities) {
                     Log.d(TAG,"Fav Observer onChanged mCategory="+mCategory);
                     if (mCategory == FAVORITE_MOVIES) {
-                        showPosterView(favMovieList);
+                        showPosterView(favoriteEntities);
                     }
                 }
             });
-            // writeToSD();
         }
-
         return super.onOptionsItemSelected(item);
-    }
-
-
-    private void writeToSD() {
-        Log.d(TAG,"writeToSD Enter");
-        AppExecutors.getInstance().getDiskIO().execute(new Runnable() {
-            @Override
-            public void run() {
-                File sd = Environment.getExternalStorageDirectory();
-                String DB_PATH = getFilesDir().getAbsolutePath().replace("files", "databases") + File.separator;
-                Log.d(TAG,"writeToSD DB_PATH="+DB_PATH);
-
-                try {
-                    if (sd.canWrite()) {
-                        String currentDBPath = "favorites.db";
-                        String backupDBPath = "backupname.db";
-                        File currentDB = new File(DB_PATH, currentDBPath);
-                        File backupDB = new File(sd, backupDBPath);
-                        Log.d(TAG,"writeToSD sd.canWrite");
-
-                        if (currentDB.exists()) {
-                            Log.d(TAG,"writeToSD currentDB.exists");
-                            FileChannel src = new FileInputStream(currentDB).getChannel();
-                            FileChannel dst = new FileOutputStream(backupDB).getChannel();
-                            dst.transferFrom(src, 0, src.size());
-                            src.close();
-                            dst.close();
-                        }
-                        Log.d(TAG,"Database Written");
-                    } else {
-                        Log.d(TAG,"writeToSD sd Cant Write");
-                    }
-                } catch (IOException e) {
-                    Log.d(TAG,"Error Pulling DB !!!!");
-                    e.printStackTrace();
-                }
-            }
-        });
     }
 
     private void loadMoviePosters(String sortBy) {

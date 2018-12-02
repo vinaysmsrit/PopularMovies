@@ -2,7 +2,7 @@ package com.vshekarappa.popularmovies.utilities;
 
 import android.content.Context;
 
-import com.vshekarappa.popularmovies.MovieDetail;
+import com.vshekarappa.popularmovies.model.MovieDetail;
 import com.vshekarappa.popularmovies.model.MovieTrailer;
 import com.vshekarappa.popularmovies.model.UserReview;
 

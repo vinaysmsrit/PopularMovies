@@ -6,23 +6,25 @@ import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
 
+import com.vshekarappa.popularmovies.model.MovieDetail;
+
 import java.util.List;
 
 @Dao
 public interface FavoriteDao {
 
     @Query("SELECT * FROM favorites ORDER BY movieId" )
-    LiveData<List<FavoriteEntity>> loadAllFavorites();
+    LiveData<List<MovieDetail>> loadAllFavorites();
 
     @Insert
-    void addFavorite(FavoriteEntity favoriteEntity);
+    void addFavorite(MovieDetail favoriteEntity);
 
     @Delete
-    void deleteFavorite(FavoriteEntity favoriteEntity);
-
-    @Query("SELECT * FROM favorites WHERE favId = :favId")
-    FavoriteEntity loadFavoriteById(int favId);
+    void deleteFavorite(MovieDetail favoriteEntity);
 
     @Query("SELECT * FROM favorites WHERE movieId = :movieId")
-    List<FavoriteEntity> loadFavoritesByMovieId(int movieId);
+    MovieDetail loadFavoriteById(int movieId);
+
+    @Query("SELECT * FROM favorites WHERE movieId = :movieId")
+    MovieDetail loadFavoritesByMovieId(int movieId);
 }

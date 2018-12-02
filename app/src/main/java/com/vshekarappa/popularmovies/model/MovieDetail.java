@@ -1,16 +1,38 @@
-package com.vshekarappa.popularmovies;
+package com.vshekarappa.popularmovies.model;
 
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.PrimaryKey;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 
+@Entity(tableName = "favorites")
 public class MovieDetail implements Parcelable{
+
+    @PrimaryKey @NonNull
+    private int movieId;
     private String title;
     private String overview;
     private String posterPath;
     private String releaseDate;
     private Double rating;
-    private int movieId;
 
+
+    public MovieDetail(int movieId,String title,String overview,String posterPath,String releaseDate,Double rating) {
+        this.movieId = movieId;
+        this.title = title;
+        this.overview = overview;
+        this.posterPath = posterPath;
+        this.releaseDate = releaseDate;
+        this.rating = rating;
+    }
+
+    @Ignore
+    public MovieDetail() {
+    }
+
+    @Ignore
     protected MovieDetail(Parcel in) {
         movieId = in.readInt();
         title = in.readString();
@@ -23,6 +45,7 @@ public class MovieDetail implements Parcelable{
             rating = in.readDouble();
         }
     }
+
 
     public static final Creator<MovieDetail> CREATOR = new Creator<MovieDetail>() {
         @Override
@@ -84,8 +107,7 @@ public class MovieDetail implements Parcelable{
         this.movieId = movieId;
     }
 
-    public MovieDetail() {
-    }
+
 
     @Override
     public int describeContents() {

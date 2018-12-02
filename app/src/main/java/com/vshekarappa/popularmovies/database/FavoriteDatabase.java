@@ -6,9 +6,10 @@ import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
 import android.util.Log;
 
+import com.vshekarappa.popularmovies.model.MovieDetail;
 import com.vshekarappa.popularmovies.utilities.MovieConstants;
 
-@Database(entities = {FavoriteEntity.class}, version = 1, exportSchema = false)
+@Database(entities = {MovieDetail.class}, version = 1, exportSchema = false)
 public abstract class FavoriteDatabase extends RoomDatabase {
 
     private static FavoriteDatabase sInstance;

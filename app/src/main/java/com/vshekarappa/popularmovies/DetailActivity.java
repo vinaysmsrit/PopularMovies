@@ -15,7 +15,7 @@ import android.widget.ToggleButton;
 
 import com.squareup.picasso.Picasso;
 import com.vshekarappa.popularmovies.database.FavoriteDatabase;
-import com.vshekarappa.popularmovies.database.FavoriteEntity;
+import com.vshekarappa.popularmovies.model.MovieDetail;
 import com.vshekarappa.popularmovies.model.MovieTrailer;
 import com.vshekarappa.popularmovies.model.UserReview;
 import com.vshekarappa.popularmovies.utilities.AppExecutors;
@@ -104,12 +104,12 @@ public class DetailActivity extends AppCompatActivity {
         AppExecutors.getInstance().getDiskIO().execute(new Runnable() {
             @Override
             public void run() {
-                final List<FavoriteEntity> favList =
+                final MovieDetail favMovie =
                         mDb.favoriteDao().loadFavoritesByMovieId(movieDetail.getMovieId());
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        if ( favList != null && favList.size() > 0) {
+                        if (favMovie != null) {
                             mFavoriteIcon.setChecked(true);
                         }
                     }
@@ -133,25 +133,22 @@ public class DetailActivity extends AppCompatActivity {
                 public void onClick(View view) {
                     boolean favAdded = false;
                     if (((ToggleButton)view).isChecked()) {
-                        final FavoriteEntity favorite = new FavoriteEntity(movieDetail);
                         AppExecutors.getInstance().getDiskIO().execute(new Runnable() {
                             @Override
                             public void run() {
-                                mDb.favoriteDao().addFavorite(favorite);
+                                mDb.favoriteDao().addFavorite(movieDetail);
                             }
                         });
                     } else {
                         AppExecutors.getInstance().getDiskIO().execute(new Runnable() {
                             @Override
                             public void run() {
-                                final List<FavoriteEntity> favList =
+                                final MovieDetail favMovie =
                                         mDb.favoriteDao().loadFavoritesByMovieId(movieDetail.getMovieId());
 
-                                if (favList != null & favList.size() > 0) {
-                                    Log.d(TAG,"Deleting Favorite size="+favList.size());
-                                    for (int i=0;i<favList.size();i++) {
-                                        mDb.favoriteDao().deleteFavorite(favList.get(i));
-                                    }
+                                if (favMovie != null ) {
+                                    Log.d(TAG,"Deleting Favorite ="+favMovie.getMovieId());
+                                    mDb.favoriteDao().deleteFavorite(favMovie);
                                 }
                             }
                         });
