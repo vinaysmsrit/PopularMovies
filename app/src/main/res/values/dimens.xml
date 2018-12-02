@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="detail_title_textsize">25sp</dimen>
+    <dimen name="detail_title_textsize">20sp</dimen>
     <dimen name="lbl_released_size">15sp</dimen>
     <dimen name="detail_loading_indicator_height">42dp</dimen>
     <dimen name="detail_loading_indicator_width">42dp</dimen>

@@ -56,11 +56,11 @@ public class MainActivity extends AppCompatActivity implements MovieDetailAdapte
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mErrorMessageDisplay = findViewById(R.id.tv_error_message_display);
+        mErrorMessageDisplay = (TextView) findViewById(R.id.tv_error_message_display);
 
         mLoadingIndicator = (ProgressBar) findViewById(R.id.pb_loading_indicator);
 
-        mPosterGridView = findViewById(R.id.posters_grid);
+        mPosterGridView = (GridView) findViewById(R.id.posters_grid);
 
         loadMoviePosters(MovieConstants.SORT_POPULAR);
 

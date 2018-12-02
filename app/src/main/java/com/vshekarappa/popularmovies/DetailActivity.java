@@ -3,6 +3,9 @@ package com.vshekarappa.popularmovies;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -26,6 +29,8 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static android.widget.LinearLayout.HORIZONTAL;
+
 public class DetailActivity extends AppCompatActivity {
     @BindView(R.id.tv_detail_mov_title)
     TextView mMovieTitleView;
@@ -45,13 +50,17 @@ public class DetailActivity extends AppCompatActivity {
     @BindView(R.id.btn_favorite)
     ToggleButton mFavoriteIcon;
 
-    @BindView(R.id.tv_vid_trailers)
+    @BindView(R.id.lbl_trailers)
     TextView mTrailerView;
 
     @BindView(R.id.tv_reviews)
     TextView mReviewsView;
 
+    @BindView(R.id.recyclerview)
+    RecyclerView mRecyclerView;
+
     private FavoriteDatabase mDb;
+    private MovieTrailerAdapter mAdapter;
     private static final String TAG = MovieConstants.APP_LOG_TAG;
 
     @Override
@@ -68,7 +77,21 @@ public class DetailActivity extends AppCompatActivity {
 
         updateFavIcon(movieDetail);
 
+        setupRecyclerView();
+
         loadMovieTrailerReviews(movieDetail);
+
+
+    }
+
+    private void setupRecyclerView() {
+        mAdapter = new MovieTrailerAdapter(this);
+        LinearLayoutManager layoutManager
+                = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        mRecyclerView.setLayoutManager(layoutManager);
+        DividerItemDecoration itemDecor = new DividerItemDecoration(this, HORIZONTAL);
+        mRecyclerView.addItemDecoration(itemDecor);
+        mRecyclerView.setAdapter(mAdapter);
     }
 
     private void loadMovieTrailerReviews(MovieDetail movieDetail) {
@@ -162,11 +185,10 @@ public class DetailActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(List<MovieTrailer> trailerList) {
-            mTrailerView.setText("Trailer List : \n");
-            for(int i=0;i<trailerList.size();i++) {
-                MovieTrailer trailer = trailerList.get(i);
-                mTrailerView.append(trailer.getKey() + " : " +trailer.getName()+"\n");
+            if (trailerList.size() > 0) {
+                mTrailerView.setVisibility(View.VISIBLE);
             }
+            mAdapter.setData(trailerList);
         }
     }
 

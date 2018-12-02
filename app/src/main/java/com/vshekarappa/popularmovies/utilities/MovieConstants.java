@@ -11,4 +11,6 @@ public class MovieConstants {
 
     public static final String SORT_POPULAR = "popular";
     public static final String SORT_TOP_RATED = "top_rated";
+
+    public static final String YOUTUBE_BASE_URI = "http://www.youtube.com/watch?v=";
 }

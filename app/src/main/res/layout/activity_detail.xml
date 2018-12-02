@@ -63,7 +63,6 @@
                     android:textStyle="italic"/>
 
 
-
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -86,20 +85,37 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingTop="10dp"
             android:id="@+id/tv_detail_mov_overview"
             android:gravity="fill_horizontal"
             android:paddingLeft="@dimen/detail_overview_padding_left"
             android:textSize="@dimen/detail_title_textsize"
             />
 
-
-        <TextView
-            android:id="@+id/tv_vid_trailers"
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_marginTop="10dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="10dp"
-            android:text="This is For Video URL"
-            android:textSize="20sp"/>
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/lbl_trailers"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:paddingLeft="10dp"
+                android:text="Trailers :"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:visibility="invisible"/>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                />
+        </LinearLayout>
+
+
 
         <TextView
             android:id="@+id/tv_reviews"
