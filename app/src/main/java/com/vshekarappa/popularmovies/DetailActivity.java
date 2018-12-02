@@ -53,14 +53,17 @@ public class DetailActivity extends AppCompatActivity {
     @BindView(R.id.lbl_trailers)
     TextView mTrailerView;
 
-    @BindView(R.id.tv_reviews)
+    @BindView(R.id.lbl_review)
+    TextView mReviewLabel;
+
+    @BindView(R.id.tv_review)
     TextView mReviewsView;
 
     @BindView(R.id.recyclerview)
-    RecyclerView mRecyclerView;
+    RecyclerView mTrailerRecyclerView;
 
     private FavoriteDatabase mDb;
-    private MovieTrailerAdapter mAdapter;
+    private MovieTrailerAdapter mTrailerAdapter;
     private static final String TAG = MovieConstants.APP_LOG_TAG;
 
     @Override
@@ -77,21 +80,19 @@ public class DetailActivity extends AppCompatActivity {
 
         updateFavIcon(movieDetail);
 
-        setupRecyclerView();
+        setupTrailerRecyclerView();
 
         loadMovieTrailerReviews(movieDetail);
-
-
     }
 
-    private void setupRecyclerView() {
-        mAdapter = new MovieTrailerAdapter(this);
+    private void setupTrailerRecyclerView() {
+        mTrailerAdapter = new MovieTrailerAdapter(this);
         LinearLayoutManager layoutManager
                 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        mRecyclerView.setLayoutManager(layoutManager);
+        mTrailerRecyclerView.setLayoutManager(layoutManager);
         DividerItemDecoration itemDecor = new DividerItemDecoration(this, HORIZONTAL);
-        mRecyclerView.addItemDecoration(itemDecor);
-        mRecyclerView.setAdapter(mAdapter);
+        mTrailerRecyclerView.addItemDecoration(itemDecor);
+        mTrailerRecyclerView.setAdapter(mTrailerAdapter);
     }
 
     private void loadMovieTrailerReviews(MovieDetail movieDetail) {
@@ -185,7 +186,7 @@ public class DetailActivity extends AppCompatActivity {
             if (trailerList.size() > 0) {
                 mTrailerView.setVisibility(View.VISIBLE);
             }
-            mAdapter.setData(trailerList);
+            mTrailerAdapter.setData(trailerList);
         }
     }
 
@@ -212,11 +213,14 @@ public class DetailActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(List<UserReview> userReviewList) {
-            mReviewsView.setText("\n User Reviews : \n\n");
-            for(int i = 0; i< userReviewList.size(); i++) {
-                UserReview userReview = userReviewList.get(i);
-                mReviewsView.append(userReview.getAuthor() +"\n");
-                mReviewsView.append(userReview.getContent() +"\n\n");
+            if (userReviewList.size() > 0) {
+                mReviewLabel.setVisibility(View.VISIBLE);
+
+                for(int i = 0; i< userReviewList.size(); i++) {
+                    UserReview userReview = userReviewList.get(i);
+                    mReviewsView.append(userReview.getAuthor() +"\n");
+                    mReviewsView.append(userReview.getContent() +"\n\n");
+                }
             }
         }
     }

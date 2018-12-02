@@ -115,18 +115,33 @@
                 />
         </LinearLayout>
 
-
+        <TextView
+            android:id="@+id/lbl_review"
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:paddingLeft="10dp"
+            android:text="User Reviews :"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:visibility="invisible"/>
 
         <TextView
-            android:id="@+id/tv_reviews"
+            android:id="@+id/tv_review"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="10dp"
-            android:text="This is For Reviews"
-            android:textSize="20sp"/>
+            android:paddingLeft="16dp"
+            android:textSize="18sp"
+            android:textStyle="normal"
+            />
 
-
-
+        <!--
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/review_recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+            -->
     </LinearLayout>
     </ScrollView>
 
