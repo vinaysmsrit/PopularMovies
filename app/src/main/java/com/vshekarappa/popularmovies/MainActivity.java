@@ -28,6 +28,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements MovieDetailAdapter.IMoviePosterClickHandler {
 
+    private static final String STATE_SORT_CATEGORY = "sort_category";
     private MovieDetailAdapter movieAdapter;
     private TextView mErrorMessageDisplay;
     private ProgressBar mLoadingIndicator;
@@ -52,9 +53,18 @@ public class MainActivity extends AppCompatActivity implements MovieDetailAdapte
         mLoadingIndicator = (ProgressBar) findViewById(R.id.pb_loading_indicator);
         mPosterGridView = (GridView) findViewById(R.id.posters_grid);
 
-        loadMoviePosters(MovieConstants.SORT_POPULAR);
-
         mDb = FavoriteDatabase.getInstance(getApplicationContext());
+
+        if (savedInstanceState != null) {
+            mCategory = savedInstanceState.getInt(STATE_SORT_CATEGORY,POPULAR_MOVIES);
+        }
+        loadMoviePosters();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putInt(STATE_SORT_CATEGORY,mCategory);
+        super.onSaveInstanceState(outState);
     }
 
     @Override
@@ -70,29 +80,42 @@ public class MainActivity extends AppCompatActivity implements MovieDetailAdapte
 
         if (id == R.id.action_popular) {
             mCategory = POPULAR_MOVIES;
-            loadMoviePosters(MovieConstants.SORT_POPULAR);
         } else if (id == R.id.action_rating) {
             mCategory = TOPRATED_MOVIES;
-            loadMoviePosters(MovieConstants.SORT_TOP_RATED);
         } else if (id == R.id.action_favorites) {
             mCategory = FAVORITE_MOVIES;
-            LiveData<List<MovieDetail>> favoriteList = mDb.favoriteDao().loadAllFavorites();
-            favoriteList.observe(MainActivity.this, new Observer<List<MovieDetail>>() {
-                @Override
-                public void onChanged(@Nullable List<MovieDetail> favoriteEntities) {
-                    Log.d(TAG,"Fav Observer onChanged mCategory="+mCategory);
-                    if (mCategory == FAVORITE_MOVIES) {
-                        showPosterView(favoriteEntities);
-                    }
-                }
-            });
         }
+        loadMoviePosters();
         return super.onOptionsItemSelected(item);
     }
 
-    private void loadMoviePosters(String sortBy) {
-        Log.d(TAG,"loadMoviePosters sortBy ="+sortBy);
-        new FetchMoviePostersTask().execute(sortBy);
+    private void loadFavoritePosters() {
+        LiveData<List<MovieDetail>> favoriteList = mDb.favoriteDao().loadAllFavorites();
+        favoriteList.observe(MainActivity.this, new Observer<List<MovieDetail>>() {
+            @Override
+            public void onChanged(@Nullable List<MovieDetail> favoriteEntities) {
+                Log.d(TAG,"Fav Observer onChanged mCategory="+mCategory);
+                if (mCategory == FAVORITE_MOVIES) {
+                    showPosterView(favoriteEntities);
+                }
+            }
+        });
+    }
+
+    private void loadMoviePosters() {
+        Log.d(TAG,"loadMoviePosters category ="+mCategory);
+        if (mCategory == FAVORITE_MOVIES) {
+            loadFavoritePosters();
+        } else {
+            String sortBy = null;
+            if (mCategory == POPULAR_MOVIES) {
+                sortBy = MovieConstants.SORT_POPULAR;
+            } else if(mCategory == TOPRATED_MOVIES) {
+                sortBy = MovieConstants.SORT_TOP_RATED;
+            }
+            Log.d(TAG,"loadMoviePosters sortBy ="+sortBy);
+            new FetchMoviePostersTask().execute(sortBy);
+        }
     }
 
     private void showPosterView(List<MovieDetail> movieDetails) {
