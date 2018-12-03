@@ -2,6 +2,7 @@ package com.vshekarappa.popularmovies;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.annotation.Nullable;
@@ -17,6 +18,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.vshekarappa.popularmovies.database.FavoriteDatabase;
+import com.vshekarappa.popularmovies.database.MainViewModel;
 import com.vshekarappa.popularmovies.model.MovieDetail;
 import com.vshekarappa.popularmovies.utilities.MovieConstants;
 import com.vshekarappa.popularmovies.utilities.MovieDetailJsonUtils;
@@ -41,8 +43,6 @@ public class MainActivity extends AppCompatActivity implements MovieDetailAdapte
     private static final int FAVORITE_MOVIES = 300;
 
     private int mCategory = POPULAR_MOVIES;
-    private FavoriteDatabase mDb;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,8 +52,6 @@ public class MainActivity extends AppCompatActivity implements MovieDetailAdapte
         mErrorMessageDisplay = (TextView) findViewById(R.id.tv_error_message_display);
         mLoadingIndicator = (ProgressBar) findViewById(R.id.pb_loading_indicator);
         mPosterGridView = (GridView) findViewById(R.id.posters_grid);
-
-        mDb = FavoriteDatabase.getInstance(getApplicationContext());
 
         if (savedInstanceState != null) {
             mCategory = savedInstanceState.getInt(STATE_SORT_CATEGORY,POPULAR_MOVIES);
@@ -90,8 +88,9 @@ public class MainActivity extends AppCompatActivity implements MovieDetailAdapte
     }
 
     private void loadFavoritePosters() {
-        LiveData<List<MovieDetail>> favoriteList = mDb.favoriteDao().loadAllFavorites();
-        favoriteList.observe(MainActivity.this, new Observer<List<MovieDetail>>() {
+        MainViewModel viewModel = ViewModelProviders.of(MainActivity.this).get(MainViewModel.class);
+
+        viewModel.getFavoriteList().observe(MainActivity.this, new Observer<List<MovieDetail>>() {
             @Override
             public void onChanged(@Nullable List<MovieDetail> favoriteEntities) {
                 Log.d(TAG,"Fav Observer onChanged mCategory="+mCategory);
