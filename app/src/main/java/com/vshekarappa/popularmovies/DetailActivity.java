@@ -140,6 +140,7 @@ public class DetailActivity extends AppCompatActivity {
                                 mDb.favoriteDao().addFavorite(movieDetail);
                             }
                         });
+                        Toast.makeText(DetailActivity.this,"Favorite Added ",Toast.LENGTH_SHORT).show();
                     } else {
                         AppExecutors.getInstance().getDiskIO().execute(new Runnable() {
                             @Override
@@ -169,7 +170,7 @@ public class DetailActivity extends AppCompatActivity {
 
             URL movieTrailersUrl =  NetworkUtils.buildUrl(category);
             Log.d(TAG,"FetchTrailersTask URL = "+movieTrailersUrl.toString());
-            String movieTrailerDetails = null;
+            String movieTrailerDetails;
             try {
                 movieTrailerDetails = NetworkUtils.getResponseFromHttpUrl(movieTrailersUrl);
                 Log.d(TAG,"FetchTrailersTask  JSON Response Received "+movieTrailerDetails);
@@ -199,7 +200,7 @@ public class DetailActivity extends AppCompatActivity {
 
             URL movieReviewsUrl =  NetworkUtils.buildUrl(category);
             Log.d(TAG,"FetchReviewsTask URL = "+movieReviewsUrl.toString());
-            String movieReviewDetails = null;
+            String movieReviewDetails;
             try {
                 movieReviewDetails = NetworkUtils.getResponseFromHttpUrl(movieReviewsUrl);
                 Log.d(TAG,"FetchReviewsTask  JSON Response Received "+movieReviewDetails);

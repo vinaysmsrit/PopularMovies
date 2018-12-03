@@ -23,8 +23,5 @@ public interface FavoriteDao {
     void deleteFavorite(MovieDetail favoriteEntity);
 
     @Query("SELECT * FROM favorites WHERE movieId = :movieId")
-    MovieDetail loadFavoriteById(int movieId);
-
-    @Query("SELECT * FROM favorites WHERE movieId = :movieId")
     MovieDetail loadFavoritesByMovieId(int movieId);
 }

@@ -1,6 +1,5 @@
 package com.vshekarappa.popularmovies;
 
-import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
@@ -17,7 +16,6 @@ import android.widget.GridView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.vshekarappa.popularmovies.database.FavoriteDatabase;
 import com.vshekarappa.popularmovies.database.MainViewModel;
 import com.vshekarappa.popularmovies.model.MovieDetail;
 import com.vshekarappa.popularmovies.utilities.MovieConstants;

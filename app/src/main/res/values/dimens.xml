@@ -18,4 +18,16 @@
     <dimen name="poster_item_width">200dp</dimen>
     <dimen name="poster_item_height">200dp</dimen>
     <dimen name="detail_overview_padding_left">10dp</dimen>
+    <dimen name="lbl_trailers_textsize">20sp</dimen>
+    <dimen name="lbl_trailers_padding_left">10dp</dimen>
+    <dimen name="lbl_trailers_height">30dp</dimen>
+    <dimen name="trailers_margin_top">10dp</dimen>
+    <dimen name="lbl_review_margin_top">10dp</dimen>
+    <dimen name="lbl_review_height">30dp</dimen>
+    <dimen name="lbl_review_padding_left">10dp</dimen>
+    <dimen name="lbl_review_textsize">20sp</dimen>
+    <dimen name="tv_review_padding_left">16dp</dimen>
+    <dimen name="tv_review_textsize">18sp</dimen>
+    <dimen name="trailer_item_padding_top">5dp</dimen>
+    <dimen name="tv_trailer_name_textsize">16sp</dimen>
 </resources>

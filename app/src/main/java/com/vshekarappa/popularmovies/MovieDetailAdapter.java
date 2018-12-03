@@ -63,9 +63,4 @@ public class MovieDetailAdapter extends ArrayAdapter<MovieDetail> {
         return convertView;
     }
 
-    class ViewHolder {
-        TextView movieName;
-        ImageView posterView;
-    }
-
 }
